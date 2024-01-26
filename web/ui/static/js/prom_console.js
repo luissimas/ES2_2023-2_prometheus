@@ -576,7 +576,6 @@ PromConsole.Graph.prototype.dispatch = function() {
   this._xhrs = new Array(this.params.expr.length);
   var pending_requests = this.params.expr.length;
   for (var i = 0; i < this.params.expr.length; ++i) {
-    var endTime = this.params.endTime;
     var url = this.buildQueryUrl(this.params.expr[i]);
     var xhr = new XMLHttpRequest();
     xhr.open('get', url, true);
