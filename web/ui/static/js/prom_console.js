@@ -508,7 +508,7 @@ PromConsole.Graph.prototype._render = function(data) {
           min: this.params.min,
           series: series
   });
-  var hoverDetail = new Rickshaw.Graph.HoverDetail({
+  new Rickshaw.Graph.HoverDetail({
       graph: graph,
       onRender: function() {
         var xLabel = this.element.getElementsByClassName("x_label")[0];
