@@ -201,7 +201,7 @@ export class Parser {
     }
 
     const vectorMatching = buildVectorMatching(this.state, node);
-    if (vectorMatching !== null && vectorMatching.on) {
+    if (vectorMatching?.on) {
       for (const l1 of vectorMatching.matchingLabels) {
         for (const l2 of vectorMatching.include) {
           if (l1 === l2) {
