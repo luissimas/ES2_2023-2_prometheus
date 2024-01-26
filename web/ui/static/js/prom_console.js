@@ -508,27 +508,6 @@ PromConsole.Graph.prototype._render = function(data) {
           min: this.params.min,
           series: series
   });
-  new Rickshaw.Graph.HoverDetail({
-      graph: graph,
-      onRender: function() {
-        var xLabel = this.element.getElementsByClassName("x_label")[0];
-        var item = this.element.getElementsByClassName("item")[0];
-        if (xLabel.offsetWidth + xLabel.offsetLeft + this.element.offsetLeft > graph.element.offsetWidth ||
-          item.offsetWidth + item.offsetLeft + this.element.offsetLeft > graph.element.offsetWidth) {
-          xLabel.classList.add("prom_graph_hover_flipped");
-          item.classList.add("prom_graph_hover_flipped");
-        } else {
-          xLabel.classList.remove("prom_graph_hover_flipped");
-          item.classList.remove("prom_graph_hover_flipped");
-        }
-      },
-      yFormatter: function(y) {
-        if (y === null) {
-          return "";
-        }
-        return this.params.yHoverFormatter(y) + this.params.yUnits;
-      }.bind(this)
-  });
   var yAxis = new Rickshaw.Graph.Axis.Y({
       graph: graph,
       tickFormat: this.params.yAxisFormatter,
