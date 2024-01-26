@@ -537,10 +537,7 @@ PromConsole.Graph.prototype._render = function(data) {
   var xAxis = new Rickshaw.Graph.Axis.Time({
       graph: graph,
   });
-  var legend = new Rickshaw.Graph.Legend({
-      graph: graph,
-      element: this.legendDiv
-  });
+	
   xAxis.render();
   yAxis.render();
   graph.render();
