@@ -153,11 +153,13 @@ jobs:
           args: --verbose
           # Make sure to sync this with Makefile.common and scripts/golangci-lint.yml.
           version: v1.55.2
-  fuzzing:
-    uses: ./.github/workflows/fuzzing.yml
-    if: github.event_name == 'pull_request'
-  codeql:
-    uses: ./.github/workflows/codeql-analysis.yml
+
+  # Since this is repo is a fork, we want to skip this crash report workflow
+  # fuzzing:
+  #   uses: ./.github/workflows/fuzzing.yml
+  #   if: github.event_name == 'pull_request'
+  # codeql:
+  #   uses: ./.github/workflows/codeql-analysis.yml
 
   # Since this is repo is a fork, we want to skip publishing workflows
   # publish_main:
