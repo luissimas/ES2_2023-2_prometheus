@@ -213,6 +213,66 @@ func TestFanoutErrors(t *testing.T) {
 	}
 }
 
+func TestStartTime(t *testing.T) {
+	ctx := context.Background()
+	inputLabel := labels.FromStrings(model.MetricNameLabel, "a")
+
+	storage1 := teststorage.New(t)
+	storage2 := teststorage.New(t)
+	storage3 := teststorage.New(t)
+	defer storage1.Close()
+	defer storage2.Close()
+	defer storage3.Close()
+
+	app1 := storage1.Appender(ctx)
+	app1.Append(0, inputLabel, 0, 0)
+
+	app2 := storage2.Appender(ctx)
+	app2.Append(0, inputLabel, 1, 0)
+
+	app3 := storage3.Appender(ctx)
+	app3.Append(0, inputLabel, 2, 0)
+
+	cases := []struct {
+		primary   storage.Storage
+		secondary []storage.Storage
+		result    int64
+		err       error
+	}{
+		{
+			primary:   storage1,
+			secondary: []storage.Storage{storage2, storage3},
+			result:    0,
+			err:       nil,
+		},
+		{
+
+			primary:   storage3,
+			secondary: []storage.Storage{storage2, storage1},
+			result:    0,
+			err:       nil,
+		},
+		{
+
+			primary:   storage2,
+			secondary: []storage.Storage{},
+			result:    1,
+			err:       nil,
+		},
+	}
+
+	for _, tc := range cases {
+		fanoutStorage := storage.NewFanout(nil, tc.primary, tc.secondary...)
+
+		t.Run("samples", func(t *testing.T) {
+			result, err := fanoutStorage.StartTime()
+
+			require.Equal(t, tc.result, result)
+			require.Equal(t, tc.err, err)
+		})
+	}
+}
+
 var errSelect = errors.New("select error")
 
 type errStorage struct{}
