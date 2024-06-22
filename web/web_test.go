@@ -506,6 +506,28 @@ func TestHandleMultipleQuitRequests(t *testing.T) {
 	}
 }
 
+func TestApplyConfig(t *testing.T) {
+	port := fmt.Sprintf(":%d", testutil.RandomUnprivilegedPort(t))
+	opts := &Options{
+		ListenAddress:   port,
+		MaxConnections:  512,
+		EnableLifecycle: true,
+		RoutePrefix:     "/",
+		ExternalURL: &url.URL{
+			Scheme: "http",
+			Host:   "localhost" + port,
+			Path:   "/",
+		},
+	}
+	cfg := &config.Config{}
+
+	webHandler := New(nil, opts)
+	require.Nil(t, webHandler.config)
+
+	webHandler.ApplyConfig(cfg)
+	require.Equal(t, cfg, webHandler.config)
+}
+
 // Test for availability of API endpoints in Prometheus Agent mode.
 func TestAgentAPIEndPoints(t *testing.T) {
 	t.Parallel()
